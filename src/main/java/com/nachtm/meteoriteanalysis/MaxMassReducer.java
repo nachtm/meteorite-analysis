@@ -1,3 +1,4 @@
+package com.nachtm.meteoriteanalysis;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
