@@ -1,6 +1,7 @@
 package com.nachtm.meteoriteanalysis;
 
 import org.apache.hadoop.io.WritableComparable;
+import org.apache.hadoop.io.DoubleWritable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -8,32 +9,37 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class Geolocation implements WritableComparable<Geolocation>{
-	double latitude;
-	double longitude;
-
-	public Geolocation(double latitude, double longitude){
-		this.latitude = latitude;
-		this.longitude = longitude;
+	
+	DoubleWritable latitude;
+	DoubleWritable longitude;
+	
+	public Geolocation(){
+		latitude = new DoubleWritable();
+		longitude = new DoubleWritable();
 	}
 
-	public double getLatitude(){
+	public Geolocation(double latitude, double longitude){
+		this.latitude = new DoubleWritable(latitude);
+		this.longitude = new DoubleWritable(longitude);
+	}
+
+	public DoubleWritable getLatitude(){
 		return latitude;
 	}
 
-	public double getLongitude(){
+	public DoubleWritable getLongitude(){
 		return longitude;
 	}
 
 	//arbitrarily, we choose to sort on latitude first
 	@Override
 	public int compareTo(Geolocation o){
-		if (latitude == o.getLatitude()){
-			if (longitude == o.getLongitude()){
-				return 0;
-			} 
-			return longitude < o.getLongitude() ? -1 : 1;
+		int latComp = latitude.compareTo(o.getLatitude());
+		if(latComp != 0){
+			return latComp;
+		} else{
+			return longitude.compareTo(o.getLongitude());
 		}
-		return latitude < o.getLatitude() ? -1 : 1;
 	}
 
 	@Override
@@ -46,24 +52,33 @@ public class Geolocation implements WritableComparable<Geolocation>{
 
 	@Override
 	public int hashCode(){
-		return (int) ((latitude * 11) + longitude);
+		return ((latitude.hashCode() * 11) + longitude.hashCode());
 	}
 
 	@Override
 	public void write(DataOutput out) throws IOException{
-		out.writeDouble(latitude);
-		out.writeDouble(longitude);
+		latitude.write(out);
+		longitude.write(out);
 	}
 
 	@Override
 	public void readFields(DataInput in) throws IOException{
-		latitude = in.readDouble();
-		longitude = in.readDouble();
+		latitude.readFields(in);
+		longitude.readFields(in);
 	}
 
 	public static Geolocation read(DataInput in) throws IOException{
 		Geolocation g = new Geolocation(0,0);
 		g.readFields(in);
 		return g;
+	}
+
+	@Override
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(latitude);
+		sb.append(" ");
+		sb.append(longitude);
+		return sb.toString();
 	}
 }

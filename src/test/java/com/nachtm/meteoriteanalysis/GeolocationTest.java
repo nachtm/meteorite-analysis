@@ -39,8 +39,8 @@ public class GeolocationTest {
         small.write(tmp);
         tmp.seek(0);
 
-        assertEquals(small.getLatitude(), tmp.readDouble(), DELTA);
-        assertEquals(small.getLongitude(), tmp.readDouble(), DELTA);
+        assertEquals(small.getLatitude().get(), tmp.readDouble(), DELTA);
+        assertEquals(small.getLongitude().get(), tmp.readDouble(), DELTA);
     }
 
     @Test
@@ -52,8 +52,8 @@ public class GeolocationTest {
         tmp.seek(0);
 
         Geolocation tmpGeo = Geolocation.read(tmp);
-        assertEquals(lat, tmpGeo.getLatitude(), DELTA);
-        assertEquals(lng, tmpGeo.getLongitude(), DELTA);
+        assertEquals(lat, tmpGeo.getLatitude().get(), DELTA);
+        assertEquals(lng, tmpGeo.getLongitude().get(), DELTA);
     }
 
     @Test
