@@ -77,7 +77,7 @@ public class Geolocation implements WritableComparable<Geolocation>{
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(latitude);
-		sb.append(" ");
+		sb.append(",");
 		sb.append(longitude);
 		return sb.toString();
 	}

@@ -12,6 +12,7 @@ public class Pair{
 	Pair(LongWritable val, Text input){
 		this.val = val;
 		this.contents = new Text(input.toString());
+		// this.contents = input;
 		this.contentsCopy = input;
 		if(input.toString().isEmpty()){
 			throw new IllegalArgumentException("Empty contents");

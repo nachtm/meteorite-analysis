@@ -38,6 +38,10 @@ public class RandomSelectionMapper
 	//the smallest of the largest values and therefore belongs 
 	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+		// if(!selection.isEmpty()){
+		// 	System.out.println("top: " + selection.peek().getContents());
+		// }
+
 		LongWritable newID = debug ? key : new LongWritable(rand.nextLong());
 		Pair toAdd = new Pair(newID, value);
 		if(selection.size() < numToSelect){
@@ -53,12 +57,12 @@ public class RandomSelectionMapper
 			// }
 
 			// System.out.println("Replaced with " + toAdd);
-			// Pair removed = selection.remove();
-			// selection.add(toAdd);
-			// System.out.println("Replaced " + removed + " with " + toAdd);
-			// System.out.println("Same contents: " + removed.getContents().toString().equals(toAdd.getContents().toString()));
-			selection.poll();
-			selection.offer(toAdd);
+			Pair removed = selection.remove();
+			selection.add(toAdd);
+			System.out.println("Replaced " + removed + " with " + toAdd);
+			System.out.println("Same contents: " + removed.getContents().toString().equals(toAdd.getContents().toString()));
+			// selection.poll();
+			// selection.offer(toAdd);
 		}
 	}
 
@@ -67,7 +71,7 @@ public class RandomSelectionMapper
 		// System.out.println("starting cleanup");
 		// System.out.println("Selection empty, size " + selection.isEmpty() + ", " + selection.size());
 		for(Pair toEmit : selection){
-			// System.out.println("Emitting " + toEmit);
+			System.out.println("Emitting " + toEmit);
 			// if(toEmit.getContents().toString().isEmpty()){
 			// 	throw new IllegalArgumentException("Empty output value " + toEmit.getVal());
 			// } 

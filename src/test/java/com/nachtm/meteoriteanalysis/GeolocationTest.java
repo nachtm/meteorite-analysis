@@ -4,6 +4,8 @@ import java.io.RandomAccessFile;
 import java.io.IOException;
 import java.io.File;
 
+import java.util.Date;
+
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -25,7 +27,7 @@ public class GeolocationTest {
         large = new Geolocation(50.5, 50.5);
         sameLatSmall = new Geolocation(-50.5, 0);
         secondLarge = new Geolocation(50.5, 50.5);
-        tmpFile = new File("tmp");
+        tmpFile = new File("tmp" + new Date().toString());
         tmp = new RandomAccessFile(tmpFile,"rw");
     }
 
