@@ -7,6 +7,8 @@ import org.apache.hadoop.io.Text;
 
 import java.util.PriorityQueue;
 import java.util.Random;
+import java.util.HashSet;
+import java.util.Set;
 
 import java.io.IOException;
 
@@ -22,6 +24,7 @@ public class RandomSelectionMapper
 
 	private int numToSelect;
 	private PriorityQueue<Pair> selection;
+	private Set<Text> selectedSet;
 	private boolean debug;
 	private Random rand;
 
@@ -31,6 +34,7 @@ public class RandomSelectionMapper
 		debug = context.getConfiguration().getBoolean(DEBUG, false);
 		selection = new PriorityQueue<>(numToSelect, (a,b) -> a.getVal().compareTo(b.getVal()));
 		rand = new Random();
+		selectedSet = new HashSet<>();
 	}
 
 	//use a min-heap to keep track of the numToSelect largest elements we've "found" so far
@@ -46,11 +50,12 @@ public class RandomSelectionMapper
 		Pair toAdd = new Pair(newID, value);
 		if(selection.size() < numToSelect){
 			selection.offer(toAdd);
+			selectedSet.add(toAdd.getContents());
 			// if(!selection.add(toAdd)){
 			// 	throw new IllegalStateException("Failure to add");
 			// }
 			// System.out.println("Added " + toAdd);
-		} else if(selection.peek().getVal().compareTo(newID) < 0){
+		} else if(selection.peek().getVal().compareTo(newID) < 0 && !selectedSet.contains(value)){
 			// System.out.println("Removed " + selection.poll());
 			// if(!selection.offer(toAdd)){
 			// 	throw new IllegalStateException("Failure to replace");
@@ -58,7 +63,9 @@ public class RandomSelectionMapper
 
 			// System.out.println("Replaced with " + toAdd);
 			Pair removed = selection.remove();
+			selectedSet.remove(removed.getContents());
 			selection.add(toAdd);
+			selectedSet.add(toAdd.getContents());
 			System.out.println("Replaced " + removed + " with " + toAdd);
 			System.out.println("Same contents: " + removed.getContents().toString().equals(toAdd.getContents().toString()));
 			// selection.poll();

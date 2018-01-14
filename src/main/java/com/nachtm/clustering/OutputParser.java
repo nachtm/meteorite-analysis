@@ -43,9 +43,8 @@ public class OutputParser{
 	}
 
 	//generate geolocation from string of form
-	// id,lat,lon
-	private static Geolocation parseGeolocation(String s){
-		String[] parts = s.split(",");
-		return new Geolocation(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
+	// id lat,lon
+	public static Geolocation parseGeolocation(String s){
+		return new Geolocation(s.substring(s.indexOf(" ") + 1));
 	}
 }

@@ -18,6 +18,13 @@ public class Geolocation implements WritableComparable<Geolocation>{
 		longitude = new DoubleWritable();
 	}
 
+	public Geolocation(String s){
+		System.out.println(s);
+		String[] parts = s.split(",");
+		latitude = new DoubleWritable(Double.parseDouble(parts[0]));
+		longitude = new DoubleWritable(Double.parseDouble(parts[1]));
+	}
+
 	public Geolocation(double latitude, double longitude){
 		this.latitude = new DoubleWritable(latitude);
 		this.longitude = new DoubleWritable(longitude);

@@ -26,7 +26,8 @@ public class KMeansReducer extends Reducer<Geolocation, Geolocation, Geolocation
 			avLat = shiftAverage(avLat, member.getLatitude().get(), numMembers);
 			avLon = shiftAverage(avLon, member.getLongitude().get(), numMembers);
 			numMembers ++; 
-			memberString.append(members.toString());
+			memberString.append(member.toString());
+			memberString.append("/");
 		}
 
 		context.write(new Geolocation(avLat, avLon), new Text(memberString.toString()));
