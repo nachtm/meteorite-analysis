@@ -18,8 +18,10 @@ public class Geolocation implements WritableComparable<Geolocation>{
 		longitude = new DoubleWritable();
 	}
 
+	/**
+	 * Generates a Geolocation from a string formatted like "latitude,longitude"
+	 */
 	public Geolocation(String s){
-		System.out.println(s);
 		String[] parts = s.split(",");
 		latitude = new DoubleWritable(Double.parseDouble(parts[0]));
 		longitude = new DoubleWritable(Double.parseDouble(parts[1]));
